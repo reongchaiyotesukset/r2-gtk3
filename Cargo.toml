@@ -1,0 +1,15 @@
+[package]
+name = "r2-gtk3"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+gtk =  "0.18.1"
+glib =  "0.18.4"
+gio =  "0.18.4"
+gdk = "0.18.0"
+once_cell = "1.19.0"
+tracing = {version = "0.1", default-features = false}
+tracing-subscriber = {version = "0.3", default-features = false, features = ["fmt"]}
