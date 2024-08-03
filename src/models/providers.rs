@@ -1,5 +1,4 @@
 use gtk::{gio, glib, prelude::*, subclass::prelude::*};
-
 use super::{Provider};
 
 mod imp {

@@ -1,17 +1,16 @@
 use gtk::{
     gio,
-    glib::{self},   
+    glib::{self,clone},   
     subclass::prelude::*,
+    glib::Properties,
     prelude::*,
 };
-  use gtk::subclass::prelude::DerivedObjectProperties;
-  use std::cell::{Cell};
-  use glib::clone;
-  use gtk::subclass::prelude::BinImpl;
-  //new
-  use crate::models::{ProvidersModel};
+use crate::{
+    models::{ProvidersModel},
+};
+
 mod imp {
-  
+    use std::cell::{Cell,RefCell};
   use super::*;
   use gtk::prelude::GtkWindowExt;
 
@@ -41,7 +40,7 @@ mod imp {
             }
             
    }
-   //หากตัดออกจะerror
+
      impl WidgetImpl for PreferencesWindow {}
    
      #[glib::derived_properties]

@@ -28,8 +28,7 @@ mod imp {
         pub is_locked: Cell<bool>,
         #[template_child]
         pub label: TemplateChild<gtk::Label>,
-        #[template_child(id = "my_button_id")]
-        pub button: TemplateChild<gtk::Button>,
+        
     }
   
   
@@ -93,10 +92,10 @@ glib::wrapper! {
 
 
 impl Window {
-      pub fn new(_model: &ProvidersModel, app: &Application) -> Self {
+      pub fn new(model: &ProvidersModel, app: &Application) -> Self {
         gio::Initable::builder()
             .property("application", app)
-            //.property("model", model)
+            .property("model", model)
             .build(gio::Cancellable::NONE)
             .unwrap()
     }
