@@ -81,19 +81,7 @@ impl PreferencesWindow {
 
         glib::Object::builder().property("model", model).build()
       }
-	   pub fn connect_restore_completed<F>(&self, callback: F) -> glib::SignalHandlerId
-		where
-			F: Fn(&Self) + 'static,
-		{
-			self.connect_local(
-				"restore-completed",
-				false,
-				clone!(@weak self as win => @default-return None, move |_| {
-					callback(&win);
-					None
-				}),
-			)
-		}
+	   
 		fn setup_actions(&self) {
            let imp = self.imp();
 		}

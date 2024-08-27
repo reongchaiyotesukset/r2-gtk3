@@ -1,17 +1,19 @@
-
-//update 07/03/2024
 use gtk::{
     gio,
-    glib::{self,clone},   
+    glib::{self,clone},
     subclass::prelude::*,
     glib::Properties,
     prelude::*,
 };
 use crate::{
     widgets::{Window,PreferencesWindow},
-    models::{ProvidersModel},
+    models::{ProvidersModel,start as start_search_provider},
+    utils::{spawn}, //new
 };
 use crate::config;
+
+//new
+use std::rc::Rc;
 
 mod imp {
   use std::cell::{Cell,RefCell};
@@ -44,31 +46,40 @@ mod imp {
                 
                 let app = self.obj();
 
-                 
-                
-                    let preferences_action = gio::ActionEntry::builder("preferences")
-                   .activate(|app: &Self::Type, _, _| {
-                   
-                    let model = &app.imp().model;
-                    let window = app.active_window();
-                    
-                      let preferences = PreferencesWindow::new(model);
-					      preferences.connect_restore_completed(clone!(@weak window =>move |_| {					  
-					                println!("Connect_restore_completed!!!");
-					      }));
-                          preferences.present();
-                      
+                                 
+                    let button1_action = gio::ActionEntry::builder("button1")
+                   .activate(|app: &Self::Type, _, _| {           
+                           
+                           if app.is_locked(){
+							   println!("if");
+						   }else{
+							   println!("else");
+						   }
                     }).build();
-					
-                    let lock_action = gio::ActionEntry::builder("lock")
-				        .activate(|app: &Self::Type, _, _| app.set_is_locked(true))
-					    .build(); 
-            
+                
+                   
                     app.add_action_entries([
-                       
-					   preferences_action,
-					   lock_action,             			                
+                       button1_action,
+                     			   			               
                      ]);  
+                     
+                   let button1_action = app.lookup_action("button1").unwrap();
+                     
+                    app.bind_property("is_locked", &button1_action, "enabled")
+					.invert_boolean()
+					.sync_create()
+					.build();
+
+
+              //new
+              spawn(clone!(
+              @strong
+                 app => async move {
+
+                    app.start_search_provider().await;
+                }
+            ));
+
             }
             
             fn activate(&self) {
@@ -107,8 +118,6 @@ impl Application {
             .build();
             app.imp().model.load();
         app.run()
-        
-   
       
     }
 
@@ -122,5 +131,11 @@ impl Application {
             .unwrap()
     }
 
+   async fn start_search_provider(&self) {
+          let mut receiver = match start_search_provider(){
+                         _ => todo!(),
+
+        };
+   }
 
 }

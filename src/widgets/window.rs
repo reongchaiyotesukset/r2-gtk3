@@ -94,8 +94,7 @@ glib::wrapper! {
 impl Window {
       pub fn new(model: &ProvidersModel, app: &Application) -> Self {
         gio::Initable::builder()
-            .property("application", app)
-            .property("model", model)
+            .property("application", app)           
             .build(gio::Cancellable::NONE)
             .unwrap()
     }
