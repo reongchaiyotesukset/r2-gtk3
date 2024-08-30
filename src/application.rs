@@ -132,10 +132,22 @@ impl Application {
     }
 
    async fn start_search_provider(&self) {
-          let mut receiver = match start_search_provider(){
+   /*
+          let mut receiver = match start_search_provider().await{
+                Err(err) => {
+                tracing::error!("Failed to start search provider {err}");
+                return;
+            }
+            Ok(receiver) => receiver,
                          _ => todo!(),
 
         };
+  */
+    let mut receiver = match start_search_provider().await{
+
+     _ => todo!(),
+
+    };
    }
 
 }
